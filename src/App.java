@@ -7,9 +7,12 @@ public class App {
         String inFile = scanner.nextLine();
         System.out.print("Enter the filename of the compressed file: ");
         String outFile = scanner.nextLine();
+        System.out.print("Enter the filename of the extracted file: ");
+        String exFile = scanner.nextLine();
+
         scanner.close();
         HuffmanTree huffman = new HuffmanTree(inFile);
         huffman.encode(inFile, outFile);
-        huffman.decode(outFile, "result2.dat");
+        huffman.decode(outFile, exFile);
     }
 }

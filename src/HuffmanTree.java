@@ -57,7 +57,7 @@ public class HuffmanTree {
    public void encode(String infile, String outFile) {
       InputStream in = null;
       OutputStream out = null;
-      LinkedList<Integer> q1 = new LinkedList<Integer>();
+      LinkedList<Integer> que2 = new LinkedList<Integer>();
       try {
          in = new FileInputStream(new File(infile));
          out = new FileOutputStream(new File(outFile));
@@ -65,15 +65,15 @@ public class HuffmanTree {
          int inNum = in.read();
          while (inNum != -1) {
             outNum = codes.get(chars.indexOf(inNum));
-            enqueueInEncode(q1, outNum);
-            if (q1.size() >= 8) {
+            enqueueInEncode(que2, outNum);
+            while (que2.size() >= 8) {
                // dequeue
-               out.write((byte) (Integer.parseInt(dequeue(q1, 8), 2)));
+               out.write((byte) (Integer.parseInt(dequeue(que2, 8), 2)));
             }
             inNum = in.read();
          }
-         if (!q1.isEmpty()) {
-            out.write((byte) (Integer.parseInt(dequeue(q1, q1.size()), 2)));
+         if (!que2.isEmpty()) {
+            out.write((byte) (Integer.parseInt(dequeue(que2, que2.size()), 2)));
          }
 
          in.close();
@@ -84,7 +84,7 @@ public class HuffmanTree {
 
    }
 
-   private String dequeue(LinkedList<Integer> list, int span) {
+   private static String dequeue(LinkedList<Integer> list, int span) {
       String num = "";
       for (int i = 0; i < span; i++) {
          num = num + list.removeFirst();
@@ -92,7 +92,7 @@ public class HuffmanTree {
       return num;
    }
 
-   private void enqueueInEncode(LinkedList<Integer> list, String num) {
+   private static void enqueueInEncode(LinkedList<Integer> list, String num) {
       for (int i = 0; i < num.length(); i++) {
          list.add(Integer.valueOf("" + num.charAt(i)));
       }
@@ -105,11 +105,11 @@ public class HuffmanTree {
          in = new FileInputStream(new File(infile));
          out = new FileOutputStream(new File(outFile));
          int inNum = (byte) (in.read());
-         int next = (byte) (in.read());
+         int next = in.read();
          HuffmanNode<Integer> node = root;
          LinkedList<Integer> queue = new LinkedList<>();
          enqueueInDecode(queue, inNum);
-         while (inNum != -1) {
+         while (next != -1) {
             inNum = (byte) next;
             enqueueInDecode(queue, inNum);
             while (queue.size() > 0) {
@@ -126,29 +126,16 @@ public class HuffmanTree {
                }
             }
             next = in.read();
-            inNum = in.read();
          }
-         if (next != -1) {
-            // take care of the last byte
-            next = (byte) next;
-            String num = Integer.toString(Integer.valueOf(next), 2);
-            for (int i = 0; i < num.length(); i++) {
-               queue.add(Integer.valueOf("" + num.charAt(i)));
-            }
-            while (queue.size() > 0) {
-               if (queue.removeFirst() == 0) {
-                  // branch left
-                  node = node.getLeft();
-               } else {
-                  // branch right
-                  node = node.getRight();
-               }
-               if (node.getLeft() == null && node.getRight() == null) {
-                  out.write(node.getPayload());
-                  node = root;
-               }
-            }
-         }
+         /*
+          * if (next != -1) { // take care of the last byte next = (byte) next; String
+          * num = Integer.toString(Integer.valueOf(next), 2); for (int i = 0; i <
+          * num.length(); i++) { queue.add(Integer.valueOf("" + num.charAt(i))); } while
+          * (queue.size() > 0) { if (queue.removeFirst() == 0) { // branch left node =
+          * node.getLeft(); } else { // branch right node = node.getRight(); } if
+          * (node.getLeft() == null && node.getRight() == null) {
+          * out.write(node.getPayload()); node = root; } } }
+          */
          in.close();
          out.close();
       } catch (IOException ex) {
