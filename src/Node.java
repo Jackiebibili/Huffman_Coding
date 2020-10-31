@@ -1,4 +1,6 @@
-public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
+import java.io.*;
+
+public class Node<E extends Comparable<E>> implements Comparable<Node<E>>, Serializable {
    private E payload;
    private Node<E> left;
    private Node<E> right;

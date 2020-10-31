@@ -10,6 +10,11 @@ public class HuffmanNode<E extends Comparable<E>> extends Node<E> {
       weight = w;
    }
 
+   @Override
+   public int compareTo(Node<E> obj) {
+      return this.weight - ((HuffmanNode<E>) (obj)).weight;
+   }
+
    public int getWeight() {
       return weight;
    }

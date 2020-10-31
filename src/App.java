@@ -11,8 +11,10 @@ public class App {
         String exFile = scanner.nextLine();
 
         scanner.close();
-        HuffmanTree huffman = new HuffmanTree(inFile);
+        HuffmanEncode huffman = new HuffmanEncode(inFile);
         huffman.encode(inFile, outFile);
-        huffman.decode(outFile, exFile);
+
+        HuffmanDecode decode = new HuffmanDecode(outFile);
+        decode.decode(exFile);
     }
 }
